@@ -17,6 +17,7 @@ for (let i=0; i<numOfBooks; i++) {
 }
 
 let table = document.getElementById("table");
+table.className='table card mb-0'
 
 let tHead = document.createElement('thead');
 let tRow = document.createElement('tr');
