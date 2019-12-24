@@ -25,13 +25,18 @@ let showPage = () => {
 
     for (let i=booksPerPage*pageNumber, j=i+booksPerPage; i<j; i++) {
         let row = document.createElement('tr')
+        row.className='row';
+
         let bookId = document.createElement('td');
+        bookId.className='col align-stretch';
         bookId.innerText=bookList[i].bookId;
 
         let title = document.createElement('td');
+        title.className='col align-stretch';
         title.innerText=bookList[i].title;
 
         let authorName = document.createElement('td');
+        authorName.className='col align-stretch';
         authorName.innerText=bookList[i].authorName;
 
         row.appendChild(bookId);
@@ -45,6 +50,7 @@ let showPage = () => {
 showPage();
 
 let buttonRow = document.getElementById('buttonRow')
+buttonRow.className='btn-group btn-block';
 
 let prevButton = document.createElement('button');
 prevButton.className='btn btn-primary';
