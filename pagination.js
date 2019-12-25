@@ -1,5 +1,3 @@
-console.log('hello world');
-
 const numOfBooks = 20;
 const booksPerPage = 6;
 const numberOfPages = Math.ceil(numOfBooks/booksPerPage);
@@ -42,16 +40,23 @@ tRow.appendChild(thAuthor);
 table.appendChild(tHead);
 
 let tableBody=document.createElement('tbody');
+
 table.append(tableBody);
 
-let showPage = () => {
-    while (tableBody.firstChild) {
-        tableBody.removeChild(tableBody.firstChild)
-    }
+let createTable = () => {
+    // while (tableBody.firstChild) {
+    //     tableBody.removeChild(tableBody.firstChild)
+    // }
 
-    for (let i=booksPerPage*pageNumber, j=i+booksPerPage; i<j; i++) {
+    for (let i=0; i<numOfBooks; i++) {
         let row = document.createElement('tr')
-        row.className='flex-row d-flex justify-content-around';
+        row.className='flex-row justify-content-around';
+        if (i < booksPerPage) {
+            row.className  += ' d-flex'
+        } else {
+            row.className += ' d-none';
+        }
+
         if (i%2==1){
             row.className+=' bg-light'
         }
@@ -76,7 +81,28 @@ let showPage = () => {
     }
 }
 
-showPage();
+let previousInit = 0;
+let previousFinal = previousInit + booksPerPage;
+let updateTable = () => {
+    let children = tableBody.childNodes;
+    let initial = pageNumber * booksPerPage;
+    let final = initial + booksPerPage;
+    for (let i=previousInit; i<previousFinal; i++) {
+        if (bookList[i]) {
+            children[i].className = children[i].className.replace('d-flex', 'd-none');
+        }
+    }
+    for (let i = initial; i < final; i++) {
+        if (bookList[i]) {
+            children[i].className = children[i].className.replace('d-none', 'd-flex');
+        }
+    }
+    previousInit = initial;
+    previousFinal = final;
+}
+
+createTable();
+updateTable();
 
 let buttonRow = document.getElementById('buttonRow')
 buttonRow.className='btn-group btn-block';
@@ -89,7 +115,7 @@ prevButton.onclick = () => {
     if (pageNumber> 0){
         pageNumber--;        
     }
-    showPage();
+    updateTable();
 }
 buttonRow.appendChild(prevButton);
 
@@ -100,7 +126,7 @@ for (let i=0; i<numberOfPages; i++){
     button.innerText =i+1;
     button.onclick = () => {
         pageNumber = i;
-        showPage();
+        updateTable();
     }
     buttonRow.appendChild(button);
 }
@@ -113,6 +139,6 @@ nextButton.onclick = () => {
     if (pageNumber < numberOfPages-1) {
         pageNumber++;        
     }
-    showPage();
+    updateTable();
 }
 buttonRow.appendChild(nextButton);
